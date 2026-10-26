@@ -1,0 +1,31 @@
+_BASE_: 'train_md4allDD_dav2_small_robotcar.yaml'
+EXPERIMENT_NAME: 'eval-md4allDD-dav2-small-robotcar-test'
+
+SYSTEM:
+  BENCHMARK: False
+
+LOAD:
+  # Best saved checkpoint by night validation AbsRel (approximately 0.0995).
+  CHECKPOINT_PATH: 'log/checkpoints/md4allDD_dav2_small_robotcar/train-md4allDD-dav2-small-robotcar-epoch=01.ckpt'
+
+DATASET:
+  WEATHER:
+    TEST: ['day-clear', 'night-clear']
+  PSEUDO_DEPTH:
+    ENABLED: False  # Student inference requires only RGB.
+
+EVALUATION:
+  BATCH_SIZE: 4
+  USE_VALIDATION_SET: False
+  CONDITION_WISE: True
+  DEPTH:
+    MIN_DEPTH: 0.1
+    MAX_DEPTH: 50.0
+  SAVE:
+    QUANTITATIVE_RES_PATH: 'results/quantitative/robotcar/test/md4allDD_dav2_small'
+    QUALITATIVE_RES_PATH: 'results/qualitative/robotcar/test/md4allDD_dav2_small'
+    VISUALIZATION_SET: []
+    RGB: False
+    DEPTH:
+      PRED: True
+      GT: False  # Disable LiDAR overlays as well as raw GT overlays.

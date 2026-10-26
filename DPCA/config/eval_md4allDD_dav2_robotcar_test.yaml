@@ -1,0 +1,33 @@
+_BASE_: 'train_md4allDD_dav2_robotcar.yaml'
+
+EXPERIMENT_NAME: 'eval-md4allDD-dav2-robotcar-test'
+
+SYSTEM:
+  BENCHMARK: False
+
+LOAD:
+  # Best validation night abs_rel (0.1061), selected without using test results.
+  CHECKPOINT_PATH: 'log/checkpoints/md4allDD_dav2_robotcar/train-md4allDD-dav2-robotcar-epoch=01.ckpt'
+
+DATASET:
+  PSEUDO_DEPTH:
+    ENABLED: False
+  WEATHER:
+    VAL: ['day-clear', 'night-clear']
+    TEST: ['day-clear', 'night-clear']
+
+EVALUATION:
+  BATCH_SIZE: 4
+  USE_VALIDATION_SET: False
+  CONDITION_WISE: True
+  DEPTH:
+    MIN_DEPTH: 0.1
+    MAX_DEPTH: 50.0
+  SAVE:
+    QUANTITATIVE_RES_PATH: 'results/quantitative/robotcar/test/md4allDD_dav2'
+    QUALITATIVE_RES_PATH: 'results/qualitative/robotcar/test/md4allDD_dav2'
+    VISUALIZATION_SET: []
+    RGB: False
+    DEPTH:
+      PRED: True
+      GT: False

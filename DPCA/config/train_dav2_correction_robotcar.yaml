@@ -1,0 +1,62 @@
+EXPERIMENT_NAME: 'train-dav2-correction-robotcar'
+
+SYSTEM:
+  NUM_WORKERS: 4
+  PERSISTENT_WORKERS: True
+
+TRAINING:
+  BATCH_SIZE: 4
+VALIDATION:
+  BATCH_SIZE: 4
+
+SAVE:
+  CHECKPOINT_PATH: 'log/checkpoints/dav2_correction_robotcar'
+  MONITOR: 'metrics_day-clear/everything/abs_rel'
+  LOGGING_INTERVAL: 50
+
+LOAD:
+  SPLIT_FILES_PATH: '/path/to/robotcar-md4all/splits'
+  FILTER_FILES_PATH: '/path/to/robotcar-md4all/filter'
+
+DATASET:
+  NAME: 'robotcar'
+  DATAROOT: '/path/to/robotcar-md4all'
+  ORIGINAL_SIZE:
+    HEIGHT: 960
+    WIDTH: 1280
+  WEATHER:
+    TRAIN: ['day-clear']
+    VAL: ['day-clear']
+    TEST: ['day-clear']
+  PSEUDO_DEPTH:
+    ENABLED: True
+    METRIC_PATH: '/path/to/robotcar-md4all/pseudo_labels_depthanything_v2_metric_png'
+    RELATIVE_PATH: '/path/to/robotcar-md4all/pseudo_labels_depthanything_v2_relative_png'
+  AUGMENTATION:
+    CROP:
+      HEIGHT: 768
+      WIDTH: 1280
+    RESIZE:
+      HEIGHT: 320
+      WIDTH: 544
+      CORRECT_INTRINSICS: True
+
+MODEL:
+  DEPTH:
+    TYPE: 'dav2_correction'
+    CORRECTION:
+      CHANNELS: 32
+      MAX_LOG_RESIDUAL: 3.0
+
+LOSS:
+  PHOTOMETRIC:
+    WEIGHT: 1.0
+    MASK_INVALID: True
+  VELOCITY_WEIGHT: 0.02
+  SMOOTHNESS_WEIGHT: 0.001
+  SUPERVISED:
+    WEIGHT: 0.0
+
+EVALUATION:
+  DEPTH:
+    MAX_DEPTH: 50.0

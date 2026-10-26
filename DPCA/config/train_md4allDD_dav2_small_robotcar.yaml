@@ -1,0 +1,30 @@
+_BASE_: 'train_md4allDD_dav2_robotcar.yaml'
+EXPERIMENT_NAME: 'train-md4allDD-dav2-small-robotcar'
+
+TRAINING:
+  EPOCHS: 5  # Initial comparison; select the best epoch using night validation AbsRel.
+
+SAVE:
+  CHECKPOINT_PATH: 'log/checkpoints/md4allDD_dav2_small_robotcar'
+
+LOAD:
+  CHECKPOINT_PATH: null
+
+MODEL:
+  DEPTH:
+    TYPE: 'dav2_small'
+    MAX_DEPTH: 80.0  # Official outdoor metric checkpoint uses an 80 m output range.
+    DAV2:
+      PRETRAINED_PATH: '/path/to/depth_anything_v2_metric_vkitti_vits.pth'
+      ENCODER_LR_FACTOR: 0.1
+
+OPTIMIZER:
+  DEPTH_LR: 0.0001  # DPT head: 1e-4; pretrained ViT-S encoder: 1e-5.
+
+LOSS:
+  SUPERVISED:
+    METHOD: 'abs_rel'  # Restore the loss used by the earlier epoch 01 student.
+    METRIC_L1_WEIGHT: 0.0
+
+# Teacher, image size, batch size and augmentations inherit the RGB baseline experiment.
+# DAV2 student uses ImageNet normalization internally; inherited normalization does not apply to it.

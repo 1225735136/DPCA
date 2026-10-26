@@ -1,0 +1,35 @@
+_BASE_: 'train_md4allDD_dav2_small_nuscenes.yaml'
+EXPERIMENT_NAME: 'eval-md4allDD-dav2-small-nuscenes-val'
+
+LOAD:
+  CHECKPOINT_PATH: 'log/checkpoints/md4allDD_dav2_small_nuscenes/last.ckpt'
+
+DATASET:
+  PSEUDO_DEPTH:
+    ENABLED: False
+  AUGMENTATION:
+    DAY_NIGHT_TRANSLATION:
+      PROBABILITY: 0.0
+    DAY_CLEAR_DAY_RAIN_TRANSLATION:
+      PROBABILITY: 0.0
+
+LOSS:
+  PHOTOMETRIC:
+    WEIGHT: 1.0
+  SUPERVISED:
+    WEIGHT: 0.0
+
+EVALUATION:
+  BATCH_SIZE: 1
+  USE_VALIDATION_SET: True
+  CONDITION_WISE: True
+  DEPTH:
+    MIN_DEPTH: 0.1
+    MAX_DEPTH: 80.0
+  SAVE:
+    QUANTITATIVE_RES_PATH: 'results/quantitative/nuscenes/val/md4allDD_dav2_small'
+    QUALITATIVE_RES_PATH: null
+    RGB: False
+    DEPTH:
+      PRED: False
+      GT: False

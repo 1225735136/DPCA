@@ -1,0 +1,63 @@
+_BASE_: 'train_dav2_correction_robotcar.yaml'
+EXPERIMENT_NAME: 'train-md4allDD-dav2-robotcar-log-depth-a1-metric'
+
+# GPU power limit is a system setting: sudo nvidia-smi -i 0 -pl 250
+SYSTEM:
+  NUM_WORKERS: 4
+  PERSISTENT_WORKERS: True
+  CPU_THREADS: 2
+  PRECISION: 32
+
+TRAINING:
+  EPOCHS: 20
+  BATCH_SIZE: 4
+  ACCUMULATE_GRAD_BATCHES: 1
+
+VALIDATION:
+  BATCH_SIZE: 4
+
+SAVE:
+  CHECKPOINT_PATH: 'log/checkpoints/md4allDD_dav2_robotcar_log_depth_a1_metric'
+  MONITOR: 'metrics_night/everything/abs_rel'
+  TOP_K: 3
+  LAST: True  # Preserve the final training state as last.ckpt
+
+LOAD:
+  CHECKPOINT_PATH: null  # Fresh loss comparison; do not resume the old optimizer
+  DAY_NIGHT_TRANSLATION_PATH: '/path/to/robotcar-md4all/translated/night'
+  DAYTIME_TRANSLATION_TEACHER_PATH: 'log/checkpoints/dav2_correction_robotcar/teacher.ckpt'
+
+DATASET:
+  WEATHER:
+    VAL: ['day-clear', 'night-clear']
+    TEST: ['day-clear', 'night-clear']
+  AUGMENTATION:
+    NORMALIZE:
+      MODE: 'Daytime'
+      DAYTIME:
+        DAY:
+          MEAN: 0.5758
+          STD: 0.319
+        NIGHT:
+          MEAN: 0.2471
+          STD: 0.2627
+    DAY_NIGHT_TRANSLATION:
+      PROBABILITY: 0.5
+
+MODEL:
+  DEPTH:
+    TYPE: 'baseline'
+
+LOSS:
+  PHOTOMETRIC:
+    WEIGHT: 0.0
+  VELOCITY_WEIGHT: 0.0
+  SMOOTHNESS_WEIGHT: 0.0
+  SUPERVISED:
+    WEIGHT: 1.0
+    METHOD: 'log_depth_a1'
+    A1_THRESHOLD: 1.25
+    A1_WEIGHT: 1.0
+    LOG_L1_WEIGHT: 1.0
+    METRIC_L1_WEIGHT: 0.1  # Multiply absolute depth error in meters
+    TEACHER_TYPE: 'dav2_correction'

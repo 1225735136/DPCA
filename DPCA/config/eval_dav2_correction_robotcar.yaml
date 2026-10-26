@@ -1,0 +1,31 @@
+_BASE_: 'train_dav2_correction_robotcar.yaml'
+
+EXPERIMENT_NAME: 'eval-dav2-correction-robotcar-test'
+
+SYSTEM:
+  ACCELERATOR: 'gpu'
+  DEVICES: 1
+  NUM_WORKERS: 4
+
+LOAD:
+  CHECKPOINT_PATH: 'log/checkpoints/dav2_correction_robotcar/teacher.ckpt'
+
+DATASET:
+  WEATHER:
+    VAL: ['day-clear']
+    TEST: ['day-clear', 'night-clear']
+
+EVALUATION:
+  BATCH_SIZE: 4
+  USE_VALIDATION_SET: False
+  CONDITION_WISE: True
+  DEPTH:
+    MIN_DEPTH: 0.1
+    MAX_DEPTH: 50.0
+  SAVE:
+    QUANTITATIVE_RES_PATH: 'results/quantitative/robotcar/test/dav2_correction'
+    QUALITATIVE_RES_PATH: 'results/qualitative/robotcar/test/dav2_correction'
+    VISUALIZATION_SET: []
+    RGB: False
+    DEPTH:
+      GT: False
