@@ -26,6 +26,10 @@ The DAV2 metric implementation used by the student and pseudo-depth generator is
 
 Prepare the dataset and pseudo-depth maps separately. The correction teacher requires both metric and relative pseudo-depth maps. Update dataset, pseudo-depth, translation-image, and checkpoint paths in the relevant YAML files before training.
 
+## Generate Metric Pseudo-Depth
+
+The DAV2 metric pseudo-depth generator and usage instructions are in generate-pseudo/ (generate-pseudo/README.md). Pretrained weights and generated pseudo-depth maps must be obtained or generated separately.
+
 ## Train on nuScenes
 
 First, train the correction teacher:
@@ -55,6 +59,4 @@ Set the selected teacher checkpoint path in config/train_md4allDD_dav2_robotcar.
 
 python train.py --config config/train_md4allDD_dav2_small_robotcar.yaml
 
-## Generate Metric Pseudo-Depth
 
-The DAV2 metric pseudo-depth generator and usage instructions are in generate-pseudo/ (generate-pseudo/README.md). Pretrained weights and generated pseudo-depth maps must be obtained or generated separately.
