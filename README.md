@@ -59,4 +59,12 @@ Set the selected teacher checkpoint path in config/train_md4allDD_dav2_robotcar.
 
 python train.py --config config/train_md4allDD_dav2_small_robotcar.yaml
 
+### Acknowledgements and License
 
+This project is built upon [md4all](https://github.com/md4all/md4all) and incorporates depth priors from [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2).
+
+We sincerely thank the authors of these projects for making their work publicly available.
+
+The code derived from md4all is subject to the CC BY-NC-SA 4.0 license. The use and redistribution of Depth Anything V2 models are subject to their respective licenses.
+
+Please refer to the original repositories for further licensing information.
