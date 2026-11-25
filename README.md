@@ -9,6 +9,7 @@ This repository implements a monocular depth estimation method based on the md4a
 2. Distill the adapted teacher into a DAV2Small metric-depth student.
 
 The nuScenes and Oxford RobotCar configurations are included. Training datasets, pseudo-depth maps, pretrained weights, checkpoints, and experiment outputs are not included.
+Notice the student for robotcar use the imagenet normalization, the student for nuscenes use the day and night normalization. 
 
 ## Method
 
