@@ -1,19 +1,20 @@
-# DPCA
-The official implementation of "DPCA: Depth Prior Correction for All-Day Monocular Depth Estimation".
-# DAV2Correction Teacher → DAV2Small Student
+# DPA
+The official implementation of "DPA: Depth Prior Adapter for Depth Foundation Models: All-Day Self-supervised Monocular
+Depth Estimation".
+# DAV2 Adapter Teacher → DAV2Small Student
 
 This repository implements a monocular depth estimation method based on the md4allDD baseline:
 
-1. Train a DAV2Correction network as the teacher.
-2. Distill the corrected teacher into a DAV2Small metric-depth student.
+1. Train a DAV2Adapter network as the teacher.
+2. Distill the adapted teacher into a DAV2Small metric-depth student.
 
 The nuScenes and Oxford RobotCar configurations are included. Training datasets, pseudo-depth maps, pretrained weights, checkpoints, and experiment outputs are not included.
 
 ## Method
 
-The correction teacher takes an RGB image together with offline DAV2 metric-depth and relative-depth pseudo-labels. It learns a per-pixel depth correction using photometric reconstruction, odometry, and smoothness losses.
+The adapter teacher takes an RGB image together with offline DAV2 metric-depth and relative-depth pseudo-labels. It learns a per-pixel depth correction using photometric reconstruction, odometry, and smoothness losses.
 
-The DAV2Small student takes RGB images only. During training, it learns from the frozen correction teacher using the md4allDD distillation pipeline. At inference and evaluation time, the student does not need the teacher or pseudo-depth maps.
+The DAV2Small student takes RGB images only. During training, it learns from the frozen adapter teacher using the md4allDD distillation pipeline. At inference and evaluation time, the student does not need the teacher or pseudo-depth maps.
 
 ## Setup
 
@@ -32,7 +33,7 @@ The DAV2 metric pseudo-depth generator and usage instructions are in generate-ps
 
 ## Train on nuScenes
 
-First, train the correction teacher:
+First, train the adapter teacher:
 
 python train.py --config config/train_dav2_correction_nuscenes.yaml
 
@@ -51,7 +52,7 @@ Student evaluation uses RGB images and LiDAR ground truth for metrics. It does n
 
 ## Train on Oxford RobotCar
 
-Train the correction teacher:
+Train the adapter teacher:
 
 python train.py --config config/train_dav2_correction_robotcar.yaml
 
